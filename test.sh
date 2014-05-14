@@ -19,5 +19,6 @@ done
 PYPREFIX=`$PYTHON -c 'import sys; print(sys.prefix)'`
 $PYPREFIX/bin/iptest
 $PYPREFIX/bin/nosetests pandas -e test_fred_multi -e test_fred_parts
+$PYTHON -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"
 
-echo "testing scipy stack"
+echo "done testing scipy stack"

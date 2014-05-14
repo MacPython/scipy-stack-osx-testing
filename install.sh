@@ -37,8 +37,6 @@ function install_macports {
 
     export PATH=$PREFIX/bin:$PATH
     sudo port -v selfupdate
-    sudo port install pkgconfig libpng freetype
-    require_success "Failed to install matplotlib dependencies"
 }
 
 
@@ -88,17 +86,6 @@ function install_macports_python {
         export SUDO=""
         export PIP=$HOME/venv/bin/pip
     fi
-}
-
-
-function install_tkl_85 {
-    TCL_VERSION="8.5.14.0"
-    curl http://downloads.activestate.com/ActiveTcl/releases/$TCL_VERSION/ActiveTcl$TCL_VERSION.296777-macosx10.5-i386-x86_64-threaded.dmg > ActiveTCL.dmg
-    require_success "Failed to download TCL $TCL_VERSION"
-
-    hdiutil attach ActiveTCL.dmg -mountpoint /Volumes/ActiveTcl
-    sudo installer -pkg /Volumes/ActiveTcl/ActiveTcl-8.5.pkg -target /
-    require_success "Failed to install ActiveTcl $TCL_VERSION"
 }
 
 

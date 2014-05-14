@@ -4,6 +4,7 @@ GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py
 MACPYTHON_PREFIX=/Library/Frameworks/Python.framework/Versions
 NIPY_PIP_URL=https://nipy.bic.berkeley.edu/scipy_installers
 SCIPY_STACK_REQ=scipy-stack-1.0-plus.txt
+MACPORTS="MacPorts-2.2.1"
 
 function require_success {
     STATUS=$?
@@ -23,7 +24,6 @@ function delete_compiler {
 
 function install_macports {
     PREFIX=/opt/local
-    MACPORTS="MacPorts-2.2.0"
     curl https://distfiles.macports.org/MacPorts/$MACPORTS.tar.gz > $MACPORTS.tar.gz --insecure
     require_success "failed to download macports"
 
@@ -66,9 +66,6 @@ function install_macports_python {
 
     sudo port install $FORCE python$Mm
     require_success "Failed to install python"
-
-    sudo port install $PY-numpy libpng freetype
-    require_success "Failed to install matplotlib dependencies"
 
     if [ -z "$3" ]; then
         VENV=0
@@ -119,18 +116,6 @@ function install_mac_python {
 }
 
 
-function install_mac_numpy {
-    NUMPY=$1
-    PY=$2
-    MAC=$3
-    curl -L http://downloads.sourceforge.net/project/numpy/NumPy/$NUMPY/numpy-$NUMPY-py$PY-python.org-macosx$MAC.dmg > numpy.dmg
-    require_success "failed to download numpy"
-
-    hdiutil attach numpy.dmg
-    sudo installer -pkg /Volumes/numpy/numpy-$NUMPY-py$PY.mpkg/ -target /
-    require_success "Failed to install numpy"
-}
-
 function get_pip {
     PYTHON=$1
 
@@ -145,10 +130,7 @@ function get_pip {
 if [ "$TEST" == "brew_system" ] ; then
 
     brew update
-
-    sudo easy_install pip
-    brew install freetype libpng pkg-config
-    require_success "Failed to install matplotlib dependencies"
+    get_pip $PYTHON
 
     if [ -z "$VENV" ]; then
         export PIP="sudo pip"
@@ -166,52 +148,26 @@ if [ "$TEST" == "brew_system" ] ; then
     install_scipy_stack
 
 elif [ "$TEST" == "brew_py" ] ; then
-
     brew update
 
-    brew install python
-    require_success "Failed to install python"
-
-    brew install freetype libpng pkg-config
-    require_success "Failed to install matplotlib dependencies"
-
-    if [ -z "$VENV" ] ; then
-        export PIP=/usr/local/bin/pip
-        export PYTHON=/usr/local/bin/python2.7
+    if [[ ${PY:0:1} == "2" ]] ; then
+        brew install python
     else
-        /usr/local/bin/pip install virtualenv
-        /usr/local/bin/virtualenv $HOME/venv
-        source $HOME/venv/bin/activate
-        export PIP=$HOME/venv/bin/pip
-        export PYTHON=$HOME/venv/bin/python
+        brew install python3
     fi
-
-    $PIP install numpy
-    install_scipy_stack
-
-elif [ "$TEST" == "brew_py3" ] ; then
-
-    brew update
-
-    brew install python3
     require_success "Failed to install python"
 
-    brew install freetype libpng pkg-config
-    require_success "Failed to install matplotlib dependencies"
-
     if [ -z "$VENV" ] ; then
-        export PIP=/usr/local/bin/pip3
-        export PYTHON=/usr/local/bin/python3.3
+        export PIP=/usr/local/bin/pip${PY}
+        export PYTHON=/usr/local/bin/python${PY}
     else
         /usr/local/bin/pip3 install virtualenv
-        /usr/local/bin/virtualenv-3.3 $HOME/venv
+        /usr/local/bin/virtualenv${PY} $HOME/venv
         source $HOME/venv/bin/activate
 
         export PIP=$HOME/venv/bin/pip
         export PYTHON=$HOME/venv/bin/python
     fi
-
-    $PIP install numpy
 
     install_scipy_stack
 
@@ -221,37 +177,12 @@ elif [ "$TEST" == "macports" ] ; then
     install_macports_python $PY noforce $VENV
     install_scipy_stack
 
-elif [ "$TEST" == "macports_py27" ] ; then
+elif [ "$TEST" == "macpython_10.9" ] ; then
 
-    PY="2.7"
-    install_macports
-    # python 2.7 has to be force installed for some unknown reason
-    install_macports_python $PY force $VENV
-    install_scipy_stack
-
-elif [ "$TEST" == "macports_py33" ]
-then
-    PY="3.3"
-    install_macports
-    install_macports_python $PY noforce $VENV
-    install_scipy_stack
-
-elif [ "$TEST" == "macpython27_10.9" ] ; then
-
-    PY_VERSION="2.7.6"
     install_mac_python $PY_VERSION
     PY=${PY_VERSION:0:3}
     get_pip $PYTHON
     export PIP="sudo $MACPYTHON_PREFIX/$PY/bin/pip$PY"
-    install_scipy_stack
-
-elif [ "$TEST" == "macpython33_10.9" ] ; then
-
-    PY_VERSION="3.3.5"
-    install_mac_python $PY_VERSION
-    PY=${PY_VERSION:0:3}
-    get_pip $PYTHON
-    export PIP="sudo $MACPYTHON_PREFIX/$PY/bin/pip-$PY"
     install_scipy_stack
 
 else

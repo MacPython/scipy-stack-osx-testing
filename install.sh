@@ -44,7 +44,7 @@ function install_macports {
 
 function install_scipy_stack {
     delete_compiler
-    PIP install -r ${NIPY_PIP_URL}/${SCIPY_STACK_REQ}
+    $PIP install -r ${NIPY_PIP_URL}/${SCIPY_STACK_REQ}
     require_success "Failed to install scipy stack"
 }
 
@@ -130,7 +130,7 @@ function get_pip {
 if [ "$TEST" == "brew_system" ] ; then
 
     brew update
-    get_pip $PYTHON
+    sudo easy_install pip
 
     if [ -z "$VENV" ]; then
         export PIP="sudo pip"

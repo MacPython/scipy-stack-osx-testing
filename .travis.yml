@@ -2,18 +2,9 @@ language:
   - objective-c
 
 env:
-  global:
-    - ARTIFACTS_AWS_REGION=us-east-1
-    - ARTIFACTS_S3_BUCKET=matplotlib-test-results
-    - secure: RTMoQnCFDKYyDniegep9nARI5bKroF1TpN/aQf02KwLia0z5IZ4eoiFxTufexgB2afXtpAa2LDZg2+ulD9+SZQ+h7GHibMEVpcOTv4ojy+ekiRAQ6OW9glrcidFoIfISJNrrNZL7mTC6baEhnjjsH0mErpBTcfZSpFpLOSNjpSs=
-    - secure: uxYSxs3D3ZOTNjRg0vKk1YsOpG5vWshekMixV4lEuwcSnLJtNHUhZvzoj11GLwqHokTaYXlM1TvFMm7oQBwtW5B+dacnOFar3MJlvu96n+B1CG6ldiIy4uZd+DKR7la0vwK7aTOKyiMK+vWQe8C0kCYBTcN0UiVQn/2nUlFgioM=
-
   matrix:
     - TEST='macpython27_10.9'
-    - TEST='macpython27_10.9' BIN_NUMPY='1'
     - TEST='macpython33_10.9'
-    # no python 3 numpy installer
-    #- TEST='macpython33_10.9' BIN_NUMPY='1'
 
     - TEST='brew_system'
     - TEST='brew_system' VENV='1'
@@ -36,16 +27,8 @@ env:
     - TEST='macports_py33'
     - TEST='macports_py33' VENV='1'
 
-before_script:
-  - gem install travis-artifacts
-
 install:
   - set -vx  # echo commands
-  - git clone http://github.com/matplotlib/matplotlib.git
-  - cd matplotlib
-  - git checkout master
-  - git log -n 1
-  - cd ..
   - source ./install.sh
 
 script:
@@ -56,4 +39,3 @@ script:
 
 after_failure:
   - echo $PWD
-  - ../travis_upload.sh

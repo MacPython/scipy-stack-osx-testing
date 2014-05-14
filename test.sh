@@ -5,10 +5,19 @@ echo "pip $PIP"
 which $PIP
 
 echo "sanity checks"
-$PYTHON -c "import dateutil; print(dateutil.__version__)"
 $PYTHON -c "import sys; print('\n'.join(sys.path))"
-$PYTHON -c "import matplotlib; print(matplotlib.__file__)"
-$PYTHON -c "from matplotlib import font_manager"
+for pkg in numpy scipy matplotlib IPython pandas sympy nose
+do
+    $PYTHON -c "import ${pkg}; print(${pkg}.__version__, ${pkg}.__file__)"
+done
 
-echo "testing matplotlib using 8 processess"
-$PYTHON ../matplotlib/tests.py -sv --processes=8 --process-timeout=300
+echo "unit tests"
+for pkg in numpy scipy matplotlib
+do
+    $PYTHON -c "import sys; import ${pkg}; sys.exit(not ${pkg}.test().wasSuccessful())"
+done
+PYPREFIX=`$PYTHON -c 'import sys; print(sys.prefix)'`
+$PYPREFIX/bin/iptest
+$PYPREFIX/bin/nosetests pandas -e test_fred_multi -e test_fred_parts
+
+echo "testing scipy stack"

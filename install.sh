@@ -2,6 +2,8 @@
 
 GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py
 MACPYTHON_PREFIX=/Library/Frameworks/Python.framework/Versions
+NIPY_PIP_URL=https://nipy.bic.berkeley.edu/scipy_installers
+SCIPY_STACK_REQ=scipy-stack-1.0-plus.txt
 
 function require_success {
     STATUS=$?
@@ -10,6 +12,12 @@ function require_success {
         echo $MESSAGE
         exit $STATUS
     fi
+}
+
+
+function delete_compiler {
+    sudo rm /usr/bin/clang
+    sudo rm /usr/bin/gcc
 }
 
 
@@ -34,13 +42,10 @@ function install_macports {
 }
 
 
-function install_matplotlib {
-    cd matplotlib
-
-    $SUDO $PYTHON setup.py install
-    require_success "Failed to install matplotlib"
-
-    cd ..
+function install_scipy_stack {
+    delete_compiler
+    PIP install -r ${NIPY_PIP_URL}/${SCIPY_STACK_REQ}
+    require_success "Failed to install scipy stack"
 }
 
 
@@ -114,47 +119,6 @@ function install_mac_python {
 }
 
 
-function install_freetype {
-    FT_VERSION=$1
-    curl -L http://sourceforge.net/projects/freetype/files/freetype2/2.5.0/freetype-2.5.0.1.tar.bz2/download > freetype.tar.bz2
-    require_success "Failed to download freetype"
-
-    tar -xjf freetype.tar.bz2
-    cd freetype-$FT_VERSION
-    ./configure --enable-shared=no --enable-static=true
-    make
-    sudo make install
-    require_success "Failed to install freetype $FT_VERSION"
-    cd ..
-}
-
-
-function install_libpng {
-    VERSION=$1
-    curl -L http://downloads.sourceforge.net/project/libpng/libpng16/$VERSION/libpng-$VERSION.tar.gz > libpng.tar.gz
-    require_success "Failed to download libpng"
-
-    tar -xzf libpng.tar.gz
-    cd libpng-$VERSION
-    ./configure --enable-shared=no --enable-static=true
-    make
-    sudo make install
-    require_success "Failed to install libpng $VERSION"
-    cd ..
-}
-
-
-function install_xquartz {
-    VERSION=$1
-    curl http://xquartz.macosforge.org/downloads/SL/XQuartz-$VERSION.dmg > xquartz.dmg
-    require_success "failed to download XQuartz"
-
-    hdiutil attach xquartz.dmg -mountpoint /Volumes/XQuartz
-    sudo installer -pkg /Volumes/XQuartz/XQuartz.pkg -target /
-    require_success "Failed to install XQuartz $VERSION"
-}
-
-
 function install_mac_numpy {
     NUMPY=$1
     PY=$2
@@ -178,8 +142,6 @@ function get_pip {
 }
 
 
-export PIP_USE_MIRRORS=1
-
 if [ "$TEST" == "brew_system" ] ; then
 
     brew update
@@ -201,7 +163,7 @@ if [ "$TEST" == "brew_system" ] ; then
         export SUDO=""
     fi
 
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "brew_py" ] ; then
 
@@ -225,7 +187,7 @@ elif [ "$TEST" == "brew_py" ] ; then
     fi
 
     $PIP install numpy
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "brew_py3" ] ; then
 
@@ -251,13 +213,13 @@ elif [ "$TEST" == "brew_py3" ] ; then
 
     $PIP install numpy
 
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "macports" ] ; then
 
     install_macports
     install_macports_python $PY noforce $VENV
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "macports_py27" ] ; then
 
@@ -265,67 +227,32 @@ elif [ "$TEST" == "macports_py27" ] ; then
     install_macports
     # python 2.7 has to be force installed for some unknown reason
     install_macports_python $PY force $VENV
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "macports_py33" ]
 then
     PY="3.3"
-
     install_macports
     install_macports_python $PY noforce $VENV
-
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "macpython27_10.9" ] ; then
 
     PY_VERSION="2.7.6"
-    FT_VERSION="2.5.0.1"
-    PNG_VERSION="1.6.3"
-    XQUARTZ_VERSION="2.7.4"
     install_mac_python $PY_VERSION
-    install_tkl_85
-    install_libpng $PNG_VERSION
-    install_freetype $FT_VERSION
     PY=${PY_VERSION:0:3}
     get_pip $PYTHON
     export PIP="sudo $MACPYTHON_PREFIX/$PY/bin/pip$PY"
-
-    # pip gets confused as to which PYTHONPATH it is supposed to look at
-    # make sure to upgrade default-installed packges so that they actually
-    # show up in $PYTHON's search path
-    if [ -z "$BIN_NUMPY" ] ; then
-        $PIP install numpy
-    else
-        PY=${PY_VERSION:0:3}
-        NUMPY=1.7.1
-        OS=10.6
-        install_mac_numpy $NUMPY $PY $OS
-    fi
-
-    install_matplotlib
+    install_scipy_stack
 
 elif [ "$TEST" == "macpython33_10.9" ] ; then
 
     PY_VERSION="3.3.5"
-    FT_VERSION="2.5.0.1"
-    PNG_VERSION="1.6.3"
-    XQUARTZ_VERSION="2.7.4"
     install_mac_python $PY_VERSION
-    install_tkl_85
-    install_libpng $PNG_VERSION
-    install_freetype $FT_VERSION
-
     PY=${PY_VERSION:0:3}
     get_pip $PYTHON
     export PIP="sudo $MACPYTHON_PREFIX/$PY/bin/pip-$PY"
-
-    if [ -z "$BIN_NUMPY" ] ; then
-        $PIP install numpy
-    else
-        exit "numpy does not distribute python 3 binaries,  yet"
-    fi
-
-    install_matplotlib
+    install_scipy_stack
 
 else
     echo "Unknown test setting ($TEST)"

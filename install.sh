@@ -150,21 +150,21 @@ if [ "$TEST" == "brew_system" ] ; then
 elif [ "$TEST" == "brew_py" ] ; then
     brew update
 
-    if [[ ${PY:0:1} == "2" ]] ; then
+    PY_DIGIT=${PY:0:1}
+    if [[ "$PY_DIGIT" == "2" ]] ; then
         brew install python
     else
         brew install python3
     fi
     require_success "Failed to install python"
-
+    PIP=/usr/local/bin/pip${PY_DIGIT}
     if [ -z "$VENV" ] ; then
-        export PIP=/usr/local/bin/pip${PY}
+        export PIP
         export PYTHON=/usr/local/bin/python${PY}
     else
-        /usr/local/bin/pip3 install virtualenv
-        /usr/local/bin/virtualenv${PY} $HOME/venv
+        $PIP install virtualenv
+        /usr/local/bin/virtualenv-${PY} $HOME/venv
         source $HOME/venv/bin/activate
-
         export PIP=$HOME/venv/bin/pip
         export PYTHON=$HOME/venv/bin/python
     fi

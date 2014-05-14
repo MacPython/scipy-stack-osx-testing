@@ -12,10 +12,11 @@ do
 done
 
 echo "unit tests"
-for pkg in numpy scipy matplotlib
+for pkg in numpy scipy
 do
     $PYTHON -c "import sys; import ${pkg}; sys.exit(not ${pkg}.test().wasSuccessful())"
 done
+$PYTHON -c "import sys; import matplotlib; sys.exit(not matplotlib.test())"
 PYPREFIX=`$PYTHON -c 'import sys; print(sys.prefix)'`
 $PYPREFIX/bin/iptest
 $PYPREFIX/bin/nosetests pandas -e test_fred_multi -e test_fred_parts

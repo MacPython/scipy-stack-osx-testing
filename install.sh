@@ -81,7 +81,7 @@ function install_macports_python {
         export PIP="$SUDO /opt/local/bin/pip-$M_dot_m"
     elif [ "$VENV" == 1 ]; then
         sudo port install $PY-virtualenv
-        virtualenv-$M_dot_m $HOME/venv --system-site-packages
+        virtualenv-$M_dot_m $HOME/venv
         source $HOME/venv/bin/activate
 
         export PYTHON=$HOME/venv/bin/python
@@ -138,7 +138,7 @@ if [ "$TEST" == "brew_system" ] ; then
         export SUDO="sudo"
     else
         sudo pip install virtualenv
-        virtualenv $HOME/venv --system-site-packages
+        virtualenv $HOME/venv
         source $HOME/venv/bin/activate
         export PIP=$HOME/venv/bin/pip
         export PYTHON=$HOME/venv/bin/python

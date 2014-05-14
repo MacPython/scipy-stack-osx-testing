@@ -177,7 +177,7 @@ elif [ "$TEST" == "macports" ] ; then
     install_macports_python $PY noforce $VENV
     install_scipy_stack
 
-elif [ "$TEST" == "macpython_10.9" ] ; then
+elif [ "$TEST" == "macpython" ] ; then
 
     install_mac_python $PY_VERSION
     PY=${PY_VERSION:0:3}

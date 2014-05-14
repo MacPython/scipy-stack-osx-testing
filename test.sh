@@ -18,8 +18,14 @@ do
 done
 $PYTHON -c "import sys; import matplotlib; sys.exit(not matplotlib.test())"
 PYPREFIX=`$PYTHON -c 'import sys; print(sys.prefix)'`
-$PYPREFIX/bin/iptest
-$PYPREFIX/bin/nosetests pandas -e test_fred_multi -e test_fred_parts
+if [ -z "$VENV" -a "${TEST}" != "macpython" ]; then
+    BIN_PREFIX=''
+else # pip always installs next to Python in virtualenvs, and for macpython
+    PYPREFIX=`$PYTHON -c 'import sys; print(sys.prefix)'`
+    BIN_PREFIX="${PY_PREFIX}/bin/"
+fi
+${BIN_PREFIX}iptest
+${BIN_PREFIX}nosetests pandas -e test_fred_multi -e test_fred_parts
 $PYTHON -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"
 
 echo "done testing scipy stack"

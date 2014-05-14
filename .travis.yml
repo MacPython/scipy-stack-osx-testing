@@ -3,9 +3,9 @@ language:
 
 env:
   matrix:
-    - TEST='macpython_10.9' PY_VERSION=2.7.5
-    - TEST='macpython_10.9' PY_VERSION=3.3.5
-    - TEST='macpython_10.9' PY_VERSION=3.4.0
+    - TEST='macpython' PY_VERSION=2.7.5
+    - TEST='macpython' PY_VERSION=3.3.5
+    - TEST='macpython' PY_VERSION=3.4.0
 
     - TEST='brew_system'
     - TEST='brew_system' VENV='1'
@@ -13,8 +13,8 @@ env:
     - TEST='brew_py' PY="2.7"
     - TEST='brew_py' PY="2.7" VENV='1'
 
-    - TEST='brew_py' PY="3.3"
-    - TEST='brew_py' PY="3.3" VENV='1'
+    - TEST='brew_py' PY="3.4"
+    - TEST='brew_py' PY="3.4" VENV='1'
 
     - TEST='macports' PY='2.7'
     - TEST='macports' PY='2.7' VENV='1'

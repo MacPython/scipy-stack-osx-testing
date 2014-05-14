@@ -1,9 +1,15 @@
 #!/usr/bin/env sh
+# Depends on following envs being defined:
+# REQUIREMENTS_FILE (URL or filename for pip requirements file)
+# TEST (name of test - see TEST checks below)
+#
+# These variables may or may not be defined depending on the test
+# PY (major.minor form of Python version)
+# PY_VERSION (major.minor.point form of Python version)
+# VENV (defined if we should install and test in virtualenv)
 
 GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py
 MACPYTHON_PREFIX=/Library/Frameworks/Python.framework/Versions
-NIPY_PIP_URL=https://nipy.bic.berkeley.edu/scipy_installers
-SCIPY_STACK_REQ=scipy-stack-1.0-plus.txt
 MACPORTS="MacPorts-2.2.1"
 
 function require_success {
@@ -17,8 +23,12 @@ function require_success {
 
 
 function delete_compiler {
-    sudo rm /usr/bin/clang
-    sudo rm /usr/bin/gcc
+    sudo rm -f /usr/bin/cc
+    sudo rm -f /usr/bin/clang
+    sudo rm -f /usr/bin/gcc
+    sudo rm -f /usr/bin/c++
+    sudo rm -f /usr/bin/clang++
+    sudo rm -f /usr/bin/g++
 }
 
 
@@ -40,10 +50,10 @@ function install_macports {
 }
 
 
-function install_scipy_stack {
+function install_requirements {
     delete_compiler
-    $PIP install -r ${NIPY_PIP_URL}/${SCIPY_STACK_REQ}
-    require_success "Failed to install scipy stack"
+    $PIP install -r ${REQUIREMENTS_FILE}
+    require_success "Failed to install requirements"
 }
 
 
@@ -132,7 +142,7 @@ if [ "$TEST" == "brew_system" ] ; then
         export SUDO=""
     fi
 
-    install_scipy_stack
+    install_requirements
 
 elif [ "$TEST" == "brew_py" ] ; then
     brew update
@@ -156,13 +166,13 @@ elif [ "$TEST" == "brew_py" ] ; then
         export PYTHON=$HOME/venv/bin/python
     fi
 
-    install_scipy_stack
+    install_requirements
 
 elif [ "$TEST" == "macports" ] ; then
 
     install_macports
     install_macports_python $PY noforce $VENV
-    install_scipy_stack
+    install_requirements
 
 elif [ "$TEST" == "macpython" ] ; then
 
@@ -170,7 +180,7 @@ elif [ "$TEST" == "macpython" ] ; then
     PY=${PY_VERSION:0:3}
     get_pip $PYTHON
     export PIP="sudo $MACPYTHON_PREFIX/$PY/bin/pip$PY"
-    install_scipy_stack
+    install_requirements
 
 else
     echo "Unknown test setting ($TEST)"

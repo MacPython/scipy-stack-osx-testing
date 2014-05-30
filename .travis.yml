@@ -7,10 +7,10 @@ env:
   matrix:
     - TEST='macpython' PY_VERSION=2.7.5
     - TEST='macpython' PY_VERSION=3.3.5
-    - TEST='macpython' PY_VERSION=3.4.0
+    - TEST='macpython' PY_VERSION=3.4.1
     - TEST='macpython' PY_VERSION=2.7.5 VENV=1
     - TEST='macpython' PY_VERSION=3.3.5 VENV=1
-    - TEST='macpython' PY_VERSION=3.4.0 VENV=1
+    - TEST='macpython' PY_VERSION=3.4.1 VENV=1
 
     # This next guy always fails because of a busted matplotlib in:
     # ``/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python``

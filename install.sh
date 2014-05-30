@@ -160,7 +160,7 @@ elif [ "$TEST" == "brew_py" ] ; then
         export PYTHON=/usr/local/bin/python${PY}
     else
         $PIP install virtualenv
-        /usr/local/bin/virtualenv-${PY} $HOME/venv
+        /usr/local/bin/virtualenv $HOME/venv
         source $HOME/venv/bin/activate
         export PIP=$HOME/venv/bin/pip
         export PYTHON=$HOME/venv/bin/python

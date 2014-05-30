@@ -37,7 +37,7 @@ fi
 ${BIN_PREFIX}iptest
 if [ $? -ne 0 ] ; then RET=1; fi
 
-${BIN_PREFIX}nosetests pandas -e test_fred_multi -e test_fred_parts
+${BIN_PREFIX}nosetests pandas -A "not slow"
 if [ $? -ne 0 ] ; then RET=1; fi
 
 $PYTHON -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"

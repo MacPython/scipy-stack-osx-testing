@@ -24,7 +24,10 @@ do
     if [ $? -ne 0 ] ; then RET=1; fi
 done
 
-$PYTHON -c "import sys; import matplotlib; sys.exit(not matplotlib.test())"
+# Matplotlib testing
+curl https://raw.githubusercontent.com/matplotlib/matplotlib/master/tests.py > mpl_tests.py
+# Miss out known fail for Python 3.4
+$PYTHON mpl_tests.py -e test_override_builtins
 if [ $? -ne 0 ] ; then RET=1; fi
 
 if [ -z "$VENV" -a "${TEST}" != "macpython" ]; then

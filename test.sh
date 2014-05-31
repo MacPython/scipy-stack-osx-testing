@@ -42,8 +42,12 @@ if [ $? -ne 0 ] ; then RET=1; fi
 
 # Exclude failing + fixed-in-trunk test test_range_slice_outofbounds
 # https://github.com/pydata/pandas/issues/7289
+# Exclude dict order tests
+# https://github.com/pydata/pandas/issues/7293
 # Don't run slow tests otherwise travis will sometimes hit 50 minute timeout
-${BIN_PREFIX}nosetests pandas -A "not slow" -e "test_range_slice_outofbounds"
+${BIN_PREFIX}nosetests pandas -A "not slow" \
+    -e test_range_slice_outofbounds \
+    -e test_dict_complex -e test_dict_numpy_complex
 if [ $? -ne 0 ] ; then RET=1; fi
 
 $PYTHON -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"

@@ -40,7 +40,10 @@ fi
 ${BIN_PREFIX}iptest
 if [ $? -ne 0 ] ; then RET=1; fi
 
-${BIN_PREFIX}nosetests pandas -A "not slow"
+# Exclude failing + fixed-in-trunk test test_range_slice_outofbounds
+# https://github.com/pydata/pandas/issues/7289
+# Don't run slow tests otherwise travis will sometimes hit 50 minute timeout
+${BIN_PREFIX}nosetests pandas -A "not slow" -e "test_range_slice_outofbounds"
 if [ $? -ne 0 ] ; then RET=1; fi
 
 $PYTHON -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"

@@ -1,30 +1,32 @@
-Testing Scipy stack wheel install on MacOS X on Travis-CI
----------------------------------------------------------
+###################################
+Testing scipy-stack install on OS X
+###################################
 
-This repo will facilitate building and testing the scipy stack on MacOS X for a
-wide range of installation methods and Python versions.  The repo tests on Mac
-OS 10.9 as provided by the Travis-CI `Mac environment
-<http://about.travis-ci.org/docs/user/osx-ci-environment/>`_ Mac OS X testing
-environment.
+This repo is for testing the scipy stack on MacOS X for a wide range of Python
+versions.  The repo tests on Mac OS 10.9 as provided by the Travis-CI `Mac
+environment <http://about.travis-ci.org/docs/user/osx-ci-environment/>`_ Mac OS
+X testing environment.
 
-Unless otherwise noted, Python dependencies are auto-installed by pip.
+Most of the code came from the `Matplotlib OSX testing
+<https://github.com/matplotlib/mpl_mac_testing>`_ repository, written by Matt
+Terry.
 
 Testing matrix:
 
 +---------------+----------------+------------------------------+
 | Python Source | Python Version |   virtual environment [#VE]_ |
 +===============+================+==============================+
-| `python.org`_ | 2.7.6          |   No                         |
+| python.org_   | 2.7.6          |   No                         |
 +---------------+----------------+------------------------------+
-| `python.org`_ | 2.7.6          |   virtualenv                 |
+| python.org_   | 2.7.6          |   virtualenv                 |
 +---------------+----------------+------------------------------+
-| `python.org`_ | 3.3.5          |   No                         |
+| python.org_   | 3.3.5          |   No                         |
 +---------------+----------------+------------------------------+
-| `python.org`_ | 3.3.5          |   virtualenv                 |
+| python.org_   | 3.3.5          |   virtualenv                 |
 +---------------+----------------+------------------------------+
-| `python.org`_ | 3.4.1          |   No                         |
+| python.org_   | 3.4.1          |   No                         |
 +---------------+----------------+------------------------------+
-| `python.org`_ | 3.4.1          |   virtualenv                 |
+| python.org_   | 3.4.1          |   virtualenv                 |
 +---------------+----------------+------------------------------+
 | system        | 2.7            |   virtualenv                 |
 +---------------+----------------+------------------------------+

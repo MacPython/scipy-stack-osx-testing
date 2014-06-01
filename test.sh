@@ -27,7 +27,7 @@ done
 # Matplotlib testing
 # Miss out known fails for Python 3.4
 # https://github.com/matplotlib/matplotlib/pull/2981
-$PYTHON mpl_tests.py -e test_override_builtins
+$PYTHON ../mpl_tests.py -e test_override_builtins
 if [ $? -ne 0 ] ; then RET=1; fi
 
 if [ -z "$VENV" -a "${TEST}" != "macpython" ]; then

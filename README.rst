@@ -3,9 +3,8 @@ Testing scipy-stack install on OS X
 ###################################
 
 This repo is for testing the scipy stack on MacOS X for a wide range of Python
-versions.  The repo tests on Mac OS 10.9 as provided by the Travis-CI `Mac
-environment <http://about.travis-ci.org/docs/user/osx-ci-environment/>`_ Mac OS
-X testing environment.
+versions.  The repo runs tests on Mac OS 10.9 as provided by the Travis-CI `Mac
+environment <http://about.travis-ci.org/docs/user/osx-ci-environment/>`_.
 
 Most of the code came from the `Matplotlib OSX testing
 <https://github.com/matplotlib/mpl_mac_testing>`_ repository, written by Matt

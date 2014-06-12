@@ -52,7 +52,7 @@ function install_macports {
 
 function install_requirements {
     delete_compiler
-    $PIP install -q -r ${REQUIREMENTS_FILE}
+    $PIP install -q --no-index -r ${REQUIREMENTS_FILE}
     require_success "Failed to install requirements"
 }
 

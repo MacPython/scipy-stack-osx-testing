@@ -5,48 +5,43 @@ env:
   global:
     - REQUIREMENTS_FILE=https://nipy.bic.berkeley.edu/scipy_installers/scipy-stack-1.0-plus.txt
   matrix:
-    - TEST='macpython' PY_VERSION=2.7.6
-    - TEST='macpython' PY_VERSION=2.7.6 VENV=1
-    - TEST='macpython' PY_VERSION=2.7.6 ARCH="arch -i386"
-    - TEST='macpython' PY_VERSION=3.3.5
-    - TEST='macpython' PY_VERSION=3.3.5 VENV=1
-    - TEST='macpython' PY_VERSION=3.3.5 ARCH="arch -i386"
-    - TEST='macpython' PY_VERSION=3.4.1
-    - TEST='macpython' PY_VERSION=3.4.1 VENV=1
-    - TEST='macpython' PY_VERSION=3.4.1 ARCH="arch -i386"
+    - INSTALL_TYPE='macpython' VERSION=2.7.6
+    - INSTALL_TYPE='macpython' VERSION=2.7.6 VENV=1
+    - INSTALL_TYPE='macpython' VERSION=2.7.6 ARCH="arch -i386"
+    - INSTALL_TYPE='macpython' VERSION=3.3.5
+    - INSTALL_TYPE='macpython' VERSION=3.3.5 VENV=1
+    - INSTALL_TYPE='macpython' VERSION=3.3.5 ARCH="arch -i386"
+    - INSTALL_TYPE='macpython' VERSION=3.4.1
+    - INSTALL_TYPE='macpython' VERSION=3.4.1 VENV=1
+    - INSTALL_TYPE='macpython' VERSION=3.4.1 ARCH="arch -i386"
 
     # This next guy always fails because of a busted matplotlib in:
     # ``/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python``
     # Without the virtualenv, none of pip installs of numpy, scipy, matplotlib
     # get above the Extras directory on the path, so we always get the system
     # version
-    # - TEST='brew_system'
-    - TEST='brew_system' VENV='1'
-
-    - TEST='brew_py' PY="2.7"
-    - TEST='brew_py' PY="2.7" VENV='1'
-
-    - TEST='brew_py' PY="3.4"
-    - TEST='brew_py' PY="3.4" VENV='1'
-
-    - TEST='macports' PY='2.7'
-    - TEST='macports' PY='2.7' VENV='1'
-
-    - TEST='macports' PY='3.3'
-    - TEST='macports' PY='3.3' VENV='1'
-
-    - TEST='macports' PY='3.4'
-    - TEST='macports' PY='3.4' VENV='1'
+    # - INSTALL_TYPE='system' VERSION=2.7
+    - INSTALL_TYPE='system' VERSION=2.7 VENV='1'
+    - INSTALL_TYPE='homebrew' VERSION="2.7"
+    - INSTALL_TYPE='homebrew' VERSION="2.7" VENV='1'
+    - INSTALL_TYPE='homebrew' VERSION="3.4"
+    - INSTALL_TYPE='homebrew' VERSION="3.4" VENV='1'
+    - INSTALL_TYPE='macports' VERSION='2.7'
+    - INSTALL_TYPE='macports' VERSION='2.7' VENV='1'
+    - INSTALL_TYPE='macports' VERSION='3.3'
+    - INSTALL_TYPE='macports' VERSION='3.3' VENV='1'
+    - INSTALL_TYPE='macports' VERSION='3.4'
+    - INSTALL_TYPE='macports' VERSION='3.4' VENV='1'
 
 install:
   - set -vx  # echo commands
-  - source ./install.sh
+  - source ./travis_install.sh
 
 script:
   - echo $PWD
   - mkdir tmp_test_dir
   - cd tmp_test_dir
-  - source ../test.sh
+  - source ../travis_test.sh
 
 after_failure:
   - echo $PWD

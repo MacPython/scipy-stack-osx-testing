@@ -1,21 +1,21 @@
 echo "python $PYTHON"
-which $PYTHON
+which $PYTHON_CMD
 
-echo "pip $PIP"
-which $PIP
+echo "pip $PIP_CMD"
+which $PIP_CMD
 
-PYTHON_TEST="$ARCH $PYTHON"
+PYTHON_TEST="$ARCH $PYTHON_CMD"
 
 # Return code
 RET=0
 
 echo "sanity checks"
-$PYTHON -c "import sys; print('\n'.join(sys.path))"
+$PYTHON_CMD -c "import sys; print('\n'.join(sys.path))"
 if [ $? -ne 0 ] ; then RET=1; fi
 RET=`expr $RET + $?`
 for pkg in numpy scipy matplotlib IPython pandas sympy nose
 do
-    $PYTHON -c "import ${pkg}; print(${pkg}.__version__, ${pkg}.__file__)"
+    $PYTHON_CMD -c "import ${pkg}; print(${pkg}.__version__, ${pkg}.__file__)"
     if [ $? -ne 0 ] ; then RET=1; fi
 done
 
@@ -32,7 +32,7 @@ done
 $PYTHON_TEST ../mpl_tests.py -e test_override_builtins
 if [ $? -ne 0 ] ; then RET=1; fi
 
-if [ -z "$VENV" -a "${TEST}" != "macpython" ]; then
+if [ -z "$VENV" -a "${INSTALL_TYPE}" != "macpython" ]; then
     BIN_PREFIX=''
 else # pip always installs next to Python in virtualenvs, and for macpython
     PY_PREFIX=`$PYTHON_TEST -c 'import sys; print(sys.prefix)'`

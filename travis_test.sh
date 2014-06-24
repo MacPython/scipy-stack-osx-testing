@@ -32,14 +32,7 @@ done
 $PYTHON_TEST ../mpl_tests.py -e test_override_builtins
 if [ $? -ne 0 ] ; then RET=1; fi
 
-if [ -z "$VENV" -a "${INSTALL_TYPE}" != "macpython" ]; then
-    BIN_PREFIX=''
-else # pip always installs next to Python in virtualenvs, and for macpython
-    PY_PREFIX=`$PYTHON_TEST -c 'import sys; print(sys.prefix)'`
-    BIN_PREFIX="${PY_PREFIX}/bin/"
-fi
-
-${BIN_PREFIX}iptest
+iptest
 if [ $? -ne 0 ] ; then RET=1; fi
 
 # Exclude failing + fixed-in-trunk test test_range_slice_outofbounds
@@ -47,7 +40,7 @@ if [ $? -ne 0 ] ; then RET=1; fi
 # Exclude dict order tests
 # https://github.com/pydata/pandas/issues/7293
 # Don't run slow tests otherwise travis will sometimes hit 50 minute timeout
-${BIN_PREFIX}nosetests pandas -A "not slow" \
+$ARCH nosetests pandas -A "not slow" \
     -e test_range_slice_outofbounds \
     -e test_dict_complex -e test_dict_numpy_complex
 if [ $? -ne 0 ] ; then RET=1; fi

@@ -22,10 +22,10 @@ env:
     # version
     # - INSTALL_TYPE=system VERSION=2.7
     - INSTALL_TYPE=system VERSION=2.7 VENV=venv
-    - INSTALL_TYPE=homebrew VERSION=2.7
-    - INSTALL_TYPE=homebrew VERSION=2.7 VENV=venv
-    - INSTALL_TYPE=homebrew VERSION=3.4
-    - INSTALL_TYPE=homebrew VERSION=3.4 VENV=venv
+    - INSTALL_TYPE=homebrew VERSION=2
+    - INSTALL_TYPE=homebrew VERSION=2 VENV=venv
+    - INSTALL_TYPE=homebrew VERSION=3
+    - INSTALL_TYPE=homebrew VERSION=3 VENV=venv
     - INSTALL_TYPE=macports VERSION=2.7
     - INSTALL_TYPE=macports VERSION=2.7 VENV=venv
     - INSTALL_TYPE=macports VERSION=3.3

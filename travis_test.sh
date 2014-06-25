@@ -1,21 +1,21 @@
 echo "python $PYTHON"
-which $PYTHON_CMD
+which $PYTHON_EXE
 
 echo "pip $PIP_CMD"
 which $PIP_CMD
 
-PYTHON_TEST="$ARCH $PYTHON_CMD"
+PYTHON_TEST="$ARCH $PYTHON_EXE"
 
 # Return code
 RET=0
 
 echo "sanity checks"
-$PYTHON_CMD -c "import sys; print('\n'.join(sys.path))"
+$PYTHON_EXE -c "import sys; print('\n'.join(sys.path))"
 if [ $? -ne 0 ] ; then RET=1; fi
 RET=`expr $RET + $?`
 for pkg in numpy scipy matplotlib IPython pandas sympy nose
 do
-    $PYTHON_CMD -c "import ${pkg}; print(${pkg}.__version__, ${pkg}.__file__)"
+    $PYTHON_EXE -c "import ${pkg}; print(${pkg}.__version__, ${pkg}.__file__)"
     if [ $? -ne 0 ] ; then RET=1; fi
 done
 

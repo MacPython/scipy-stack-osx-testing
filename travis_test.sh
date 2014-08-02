@@ -35,14 +35,16 @@ if [ $? -ne 0 ] ; then RET=1; fi
 iptest
 if [ $? -ne 0 ] ; then RET=1; fi
 
-# Exclude failing + fixed-in-trunk test test_range_slice_outofbounds
-# https://github.com/pydata/pandas/issues/7289
-# Exclude dict order tests
-# https://github.com/pydata/pandas/issues/7293
+# Exclude failing + fixed-in-trunk tests
+# Error in test_fred fixed by f6f84db
+# Error in test_clipboard known
+# https://groups.google.com/d/msg/pydata/AzMPFAE9bhw/hs4H516gS4YJ
+# Error in datetime parsing apparently addressed by 0621f9f
 # Don't run slow tests otherwise travis will sometimes hit 50 minute timeout
 $ARCH nosetests pandas -A "not slow" \
-    -e test_range_slice_outofbounds \
-    -e test_dict_complex -e test_dict_numpy_complex
+    -e test_clipboard \
+    -e test_fred \
+    -e test_replace_datetime
 if [ $? -ne 0 ] ; then RET=1; fi
 
 $PYTHON_TEST -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"

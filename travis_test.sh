@@ -19,6 +19,9 @@ do
     if [ $? -ne 0 ] ; then RET=1; fi
 done
 
+# Markupsafe
+nosetests markupsafe
+
 echo "unit tests"
 for pkg in numpy scipy
 do

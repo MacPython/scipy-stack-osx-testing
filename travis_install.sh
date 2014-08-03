@@ -18,7 +18,7 @@ function delete_compiler {
 
 function install_requirements {
     delete_compiler
-    $PIP_CMD install -q -r ${REQUIREMENTS_FILE}
+    $PIP_CMD install -r ${REQUIREMENTS_FILE}
     require_success "Failed to install requirements"
 }
 

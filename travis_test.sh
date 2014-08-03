@@ -22,6 +22,9 @@ done
 # Markupsafe
 nosetests markupsafe
 
+# Tornado
+$PYTHON_TEST -m tornado.test.runtests
+
 echo "unit tests"
 for pkg in numpy scipy
 do

@@ -16,11 +16,12 @@ function delete_compiler {
 }
 
 
-function install_requirements {
-    delete_compiler
-    $PIP_CMD install -r ${REQUIREMENTS_FILE}
-    require_success "Failed to install requirements"
-}
-
 get_python_environment $INSTALL_TYPE $VERSION $VENV
-install_requirements
+delete_compiler
+if [ -n "$PRE" ]; then
+    check_var $WHEEL_URL
+    $PIP_CMD install -f $WHEEL_URL --pre $PRE
+    require_success "Failed to install pre requirements"
+fi
+$PIP_CMD install -r ${REQUIREMENTS_FILE}
+require_success "Failed to install requirements"

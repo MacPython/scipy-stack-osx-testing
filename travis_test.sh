@@ -33,6 +33,9 @@ do
 done
 
 # Matplotlib testing
+# increase number of open files allowed for tests
+# https://github.com/matplotlib/matplotlib/issues/3315
+ulimit -n 4096
 # Miss out known fails for Python 3.4
 # https://github.com/matplotlib/matplotlib/pull/2981
 $PYTHON_TEST ../mpl_tests.py -e test_override_builtins

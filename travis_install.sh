@@ -19,8 +19,8 @@ function delete_compiler {
 get_python_environment $INSTALL_TYPE $VERSION $VENV
 delete_compiler
 if [ -n "$PRE" ]; then
-    check_var $WHEEL_URL
-    $PIP_CMD install -f $WHEEL_URL --pre $PRE
+    check_var $PRE_URL
+    $PIP_CMD install -f $PRE_URL --pre $PRE
     require_success "Failed to install pre requirements"
 fi
 $PIP_CMD install -r ${REQUIREMENTS_FILE}

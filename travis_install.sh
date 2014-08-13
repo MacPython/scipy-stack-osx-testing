@@ -18,6 +18,11 @@ function delete_compiler {
 
 get_python_environment $INSTALL_TYPE $VERSION $VENV
 delete_compiler
+if [ -n "$NO_PRE" ]; then
+    check_var $PRE_URL
+    $PIP_CMD install -f $PRE_URL $NO_PRE
+    require_success "Failed to install no-pre requirements"
+fi
 if [ -n "$PRE" ]; then
     check_var $PRE_URL
     $PIP_CMD install -f $PRE_URL --pre $PRE

@@ -8,7 +8,12 @@ env:
     # - PRE_URL=https://nipy.bic.berkeley.edu/scipy_installers
     # Rackspace container for bleeding edge builds
     - PRE_URL=http://wheels.scikit-image.org
-    - PRE=matplotlib
+    # NO_PRE installs non-pre dependencies, finding also from PRE_URL
+    # This is useful when you are installing something with --pre that depends
+    # on packages that also have pre-release wheels, but you don't want to
+    # install these
+    - NO_PRE=numpy # stuff that should be installed without --pre
+    - PRE=matplotlib # stuff that should be install with --pre
   matrix:
     - INSTALL_TYPE=macpython VERSION=2.7.6
     - INSTALL_TYPE=macpython VERSION=2.7.6 VENV=venv

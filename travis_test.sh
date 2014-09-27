@@ -49,11 +49,13 @@ if [ $? -ne 0 ] ; then RET=1; fi
 # Error in test_clipboard known
 # https://groups.google.com/d/msg/pydata/AzMPFAE9bhw/hs4H516gS4YJ
 # Error in datetime parsing apparently addressed by 0621f9f
+# dateindex conversion discussed on MPL issues; known fail for mpl 1.4.0
 # Don't run slow tests otherwise travis will sometimes hit 50 minute timeout
 $ARCH nosetests pandas -A "not slow" \
     -e test_clipboard \
     -e test_fred \
-    -e test_replace_datetime
+    -e test_replace_datetime \
+    -e test_dateindex_conversion
 if [ $? -ne 0 ] ; then RET=1; fi
 
 $PYTHON_TEST -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"

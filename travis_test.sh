@@ -26,11 +26,12 @@ nosetests markupsafe
 $PYTHON_TEST -m tornado.test.runtests
 
 echo "unit tests"
-for pkg in numpy scipy
-do
-    $PYTHON_TEST -c "import sys; import ${pkg}; sys.exit(not ${pkg}.test().wasSuccessful())"
-    if [ $? -ne 0 ] ; then RET=1; fi
-done
+# Numpy
+$PYTHON_TEST -c "import sys; import numpy; sys.exit(not numpy.test().wasSuccessful())"
+if [ $? -ne 0 ] ; then RET=1; fi
+# Scipy
+$PYTHON_TEST ../scipy_tests.py
+if [ $? -ne 0 ] ; then RET=1; fi
 
 # Matplotlib testing
 # increase number of open files allowed for tests

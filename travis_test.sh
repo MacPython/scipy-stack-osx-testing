@@ -21,9 +21,11 @@ done
 
 # Markupsafe
 nosetests markupsafe
+if [ $? -ne 0 ] ; then RET=1; fi
 
 # Tornado
 $PYTHON_TEST -m tornado.test.runtests
+if [ $? -ne 0 ] ; then RET=1; fi
 
 echo "unit tests"
 # Numpy

@@ -54,8 +54,4 @@ script:
   - source ../travis_test.sh
 
 after_failure:
-  - which gfortran
-  - which g77
-  - which f77
-  - echo $CFLAGS
-  - echo $FFLAGS
+  - gfortran -v

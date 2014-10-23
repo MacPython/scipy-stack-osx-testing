@@ -29,6 +29,11 @@ if [ $? -ne 0 ] ; then RET=1; fi
 
 echo "unit tests"
 # Numpy
+if [ "$ARCH" == "arch -i386" ]; then
+    # Travis machines have gcc version of gfortran; f2py needs flags for i386
+    export LDFLAGS="-Wall -undefined dynamic_lookup -bundle -m32"
+    export FARCH='-m32'
+fi
 $PYTHON_TEST -c "import sys; import numpy; sys.exit(not numpy.test().wasSuccessful())"
 if [ $? -ne 0 ] ; then RET=1; fi
 # Scipy

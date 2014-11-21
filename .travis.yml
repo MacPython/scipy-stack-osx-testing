@@ -7,3 +7,5 @@ install:
 script:
   - uname -a
   - stty -a
+  - stty columns 80
+  - stty -a

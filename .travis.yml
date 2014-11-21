@@ -44,7 +44,7 @@ env:
     - INSTALL_TYPE=macports VERSION=3.4 VENV=venv
 
 install:
-  - set -vx  # echo commands
+  - stty columns 80 # set columns in terminal
   - source ./travis_install.sh
 
 script:
@@ -52,6 +52,3 @@ script:
   - mkdir tmp_test_dir
   - cd tmp_test_dir
   - source ../travis_test.sh
-
-after_failure:
-  - gfortran -v

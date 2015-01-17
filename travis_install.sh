@@ -28,5 +28,5 @@ if [ -n "$PRE" ]; then
     $PIP_CMD install -f $PRE_URL --pre $PRE
     require_success "Failed to install pre requirements"
 fi
-$PIP_CMD install -r ${REQUIREMENTS_FILE}
+$PIP_CMD install -q -r ${REQUIREMENTS_FILE}
 require_success "Failed to install requirements"

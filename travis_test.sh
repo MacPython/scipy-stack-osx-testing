@@ -68,6 +68,8 @@ if [ $? -ne 0 ] ; then RET=1; fi
 
 $PYTHON_TEST -c "import sys; import sympy; sys.exit(not sympy.test('/basic', '/util'))"
 if [ $? -ne 0 ] ; then RET=1; fi
+$PYTHON_TEST -c "import sys; import statsmodels; sys.exit(not statsmodels().wasSuccessful())"
+if [ $? -ne 0 ] ; then RET=1; fi
 
 echo "done testing scipy stack"
 

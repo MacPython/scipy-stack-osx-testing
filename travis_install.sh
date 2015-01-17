@@ -30,3 +30,5 @@ if [ -n "$PRE" ]; then
 fi
 $PIP_CMD install -q -r ${REQUIREMENTS_FILE}
 require_success "Failed to install requirements"
+# Show pip installations
+$PIP_CMD freeze

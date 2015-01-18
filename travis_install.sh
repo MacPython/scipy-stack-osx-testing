@@ -16,6 +16,11 @@ function delete_compiler {
 }
 
 
+# Remove travis installs of virtualenv and pip
+pip uninstall -y virtualenv
+pip uninstall -y pip
+
+# Install Python and pip, maybe virtualenv
 get_python_environment $INSTALL_TYPE $VERSION $VENV
 delete_compiler
 if [ -n "$NO_PRE" ]; then

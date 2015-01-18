@@ -17,8 +17,8 @@ function delete_compiler {
 
 
 # Remove travis installs of virtualenv and pip
-pip uninstall -y virtualenv
-pip uninstall -y pip
+sudo pip uninstall -y virtualenv
+sudo pip uninstall -y pip
 
 # Install Python and pip, maybe virtualenv
 get_python_environment $INSTALL_TYPE $VERSION $VENV

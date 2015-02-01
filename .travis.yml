@@ -13,7 +13,8 @@ env:
     # on packages that also have pre-release wheels, but you don't want to
     # install these
     #- NO_PRE=numpy # stuff that should be installed without --pre
-    #- PRE=scipy # stuff that should be install with --pre
+    #- PRE=scipy # stuff that should be installed with --pre
+    - PRE=numpy
   matrix:
     - INSTALL_TYPE=macpython VERSION=2.7.9
     - INSTALL_TYPE=macpython VERSION=2.7.9 VENV=venv
